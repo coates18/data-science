@@ -1,0 +1,26 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+# Clear the environment in R
+rm(list = ls (all=TRUE))
+#Find the inequality Gini index variable (load API key, search for variables)
+library(tidycensus)
+library(tidyverse)
+library(rio)
+census_api_key("f86fc5dc41e97251be46b53c88b20255fb34a245")
+readRenviron("~/.Renviron")
+v10 <-load_variables(year = 2010,"acs5")
+v15 <-load_variables(year = 2015, "acs5")
+View(v10)
+View(v15)
+#subset
+inequality_panel = subset(v10, name =="B19083_001")
+#Rename estimate as gini in final data frame
+inequality_panel <- get_acs(variables= c(gini="B19083_001")), state= "NAME", year = 2010)
+inequality_panel <- get_acs(variables= c(gini="B19083_001")), state= "NAME", year = 2015)
+#Run head command
+head(inequality_panel)
+#Reshape inequality_panel wide, such that the gini values for 2010 and 2013 have their own columns
+
